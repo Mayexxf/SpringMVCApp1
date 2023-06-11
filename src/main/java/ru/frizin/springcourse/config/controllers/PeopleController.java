@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.frizin.springcourse.config.DAO.PersonDAO;
 import ru.frizin.springcourse.config.models.Person;
+import ru.frizin.springcourse.util.PersonValidator;
 
 @Controller
 @RequestMapping("/people")
@@ -14,9 +15,11 @@ import ru.frizin.springcourse.config.models.Person;
 public class PeopleController {
 
     private final PersonDAO personDAO;
+    private final PersonValidator personValidator;
 
-    public PeopleController(PersonDAO persenDAO) {
+    public PeopleController(PersonDAO persenDAO, PersonValidator personValidator) {
         this.personDAO = persenDAO;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -32,6 +35,7 @@ public class PeopleController {
         model.addAttribute("person", personDAO.show(id));
         return "people/show";
     }
+
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("person") Person person){
 
@@ -40,6 +44,8 @@ public class PeopleController {
 
     @PostMapping
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
+
+        personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()){
             return "people/new";
@@ -58,6 +64,8 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id){
 
+
+        personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
             return "people/edit";
         personDAO.update(id, person);
