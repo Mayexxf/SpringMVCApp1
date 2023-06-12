@@ -34,5 +34,15 @@ public class BookDAO {
                 .stream().findAny().orElse(null);
     }
 
+    public void save(Book book){
+        jdbcTemplate.update("INSERT into Book(name_book, autor, year_book) values (?, ?, ?)",
+                book.getName_book(), book.getAutor(), book.getYear_book());
+    }
+
+    public void update (Book book, int id){
+        jdbcTemplate.update(("UPDATE book set name_book=?, autor=?, year_book=? where id=?"),
+                book.getName_book(), book.getAutor(), book.getYear_book(), id);
+    }
+
 
 }

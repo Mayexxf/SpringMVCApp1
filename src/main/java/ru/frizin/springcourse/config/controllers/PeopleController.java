@@ -38,18 +38,17 @@ public class PeopleController {
 
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("person") Person person){
-
         return "people/new";
     }
 
     @PostMapping
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
 
-        personValidator.validate(person, bindingResult);
-
-        if (bindingResult.hasErrors()){
-            return "people/new";
-        }
+//        personValidator.validate(person, bindingResult);
+//
+//        if (bindingResult.hasErrors()){
+//            return "people/new";
+//        }
         personDAO.save(person);
         return "redirect:/people";
     }

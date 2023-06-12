@@ -33,13 +33,13 @@ public class PersonDAO {
     }
 
     public void save(Person person){
-        jdbcTemplate.update("INSERT INTO Person(name, age) VALUES (?, ?)",
-                person.getName(), person.getAge());
+        jdbcTemplate.update("INSERT INTO Person(fio, date) VALUES (?, ?)",
+                person.getFio(), person.getDate());
     }
 
     public void update(int id, Person person){
-        jdbcTemplate.update(("UPDATE Person SET name=?, age=? WHERE id=?"),
-                person.getName(), person.getAge(), id);
+        jdbcTemplate.update(("UPDATE Person SET fio=?, date=? WHERE id=?"),
+                person.getFio(), person.getDate(), id);
     }
 
     public void delete(int id){
@@ -47,57 +47,56 @@ public class PersonDAO {
 
     }
 
-    public void testMultipleUpdate(){
-        List<Person> people = create100People();
-
-        long before = System.currentTimeMillis();
-
-        for (Person person: people){
-            jdbcTemplate.update("INSERT INTO Person VALUES (?, ?, ?, ?)", person.getId(), person.getName(), person.getAge(), person.getEmail());
-        }
-
-        long after = System.currentTimeMillis();
-
-        System.out.println("Time - " + (after - before));
-    }
+//    public void testMultipleUpdate(){
+////        List<Person> people = create100People();
+//
+//        long before = System.currentTimeMillis();
+//
+//        for (Person person: people){
+//            jdbcTemplate.update("INSERT INTO Person VALUES (?, ?, ?)", person.getId(), person.getFio(), person.getDate());
+//        }
+//
+//        long after = System.currentTimeMillis();
+//
+//        System.out.println("Time - " + (after - before));
+//    }
 
     public void deleteAlltestBatch(){
         jdbcTemplate.update("DELETE FROM person");
     }
 
 
-    public void testBatchUpdate(){
-        List<Person> people = create100People();
+//    public void testBatchUpdate(){
+////        List<Person> people = create100People();
+//
+//        long before = System.currentTimeMillis();
+//
+//        jdbcTemplate.batchUpdate("INSERT INTO Person VALUES (?, ?, ?)",
+//                new BatchPreparedStatementSetter() {
+//                    @Override
+//                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+//                        ps.setInt(1, people.get(i).getId());
+//                        ps.setString(2, people.get(i).getFio());
+//                        ps.setInt(3, people.get(i).getDate());
+//                    }
+//
+//                    @Override
+//                    public int getBatchSize() {
+//                        return people.size();
+//                    }
+//                });
+//
+//        long after = System.currentTimeMillis();
+//        System.out.println("Time - " + (after - before));
+//    }
 
-        long before = System.currentTimeMillis();
-
-        jdbcTemplate.batchUpdate("INSERT INTO Person VALUES (?, ?, ?, ?)",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setInt(1, people.get(i).getId());
-                        ps.setString(2, people.get(i).getName());
-                        ps.setInt(3, people.get(i).getAge());
-                        ps.setString(4, people.get(i).getEmail());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return people.size();
-                    }
-                });
-
-        long after = System.currentTimeMillis();
-        System.out.println("Time - " + (after - before));
-    }
-
-    private List<Person> create100People(){
-        List<Person> people = new ArrayList<>();
-
-        for (int i = 0; i < 1000; i++){
-            people.add(new Person(i, "Name" + i, 30, "test" + i + "@mail.ru", "some address"));
-        }
-
-        return people;
-    }
+//    private List<Person> create100People(){
+//        List<Person> people = new ArrayList<>();
+//
+//        for (int i = 0; i < 1000; i++){
+//            people.add(new Person(i, "Name" + i, 30, "test" + i + "@mail.ru", "some address"));
+//        }
+//
+//        return people;
+//    }
 }

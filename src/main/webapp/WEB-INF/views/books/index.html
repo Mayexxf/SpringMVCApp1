@@ -5,15 +5,14 @@
     <title>Все книги</title>
 </head>
 <body>
+<!--<p th:text="${books.getName_book}"></p>-->
 
 <div th:each="book : ${books}">
-    <a th:href="@{/book/{id}(id=${book.getId()})}"
-       th:text="${book.getName() + ', ' + book.getAge()}">book</a>
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName_book() + ', ' + book.getAutor()}">book</a>
 </div>
 <br/>
 <hr/>
-<a href="/people/new">Создание новой книги!</a>
-
-
+<a href="/books/new">Создание новой книги!</a>
 </body>
 </html>
